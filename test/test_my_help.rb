@@ -114,8 +114,10 @@ class TestMyHelpControl <  Test::Unit::TestCase
   #must "change editor"
 >>>>>>> c9916b0bfbbb1fb93e28a7edfd4944d59bd3f158
   def test_change_editor
-    @control.editor = 'vim'
+    tmp_editor = @control.editor
+    @control.set_editor('vim')
     assert_equal('vim', @control.editor)
+    @control.editor=tmp_editor
 #    @control.edit_help('help_template')  # => command_line(rspec)でassertするべき
   end
 
