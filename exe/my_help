@@ -1,25 +1,32 @@
 #!/usr/bin/env ruby
 require 'thor'
 require 'my_help'
-
+require 'colorize'
 class MyCLI < Thor
   desc('setup', 'set up the test database')
   def setup(*args)
-    # some setup tasks here
     $control = MyHelp::Control.new()
   end
 
-  desc "list", "list all helps, specific HELP, or item"
+  desc "list", "list helps, specific HELP, or item"
   def list(*args)
     invoke :setup
     file = args[0]
     item = args[1]
     if file.nil?
-      $control.list_all
+      puts $control.list_all.blue # list []
     elsif item.nil?
-      $control.list_help(file)
+      begin
+        puts $control.list_help(file) # list [file]
+      rescue => e
+        puts e.to_s.red
+      end
     else
-      $control.show_item(file, item)
+      begin 
+        puts $control.show_item(file, item) # list [file] [item]
+      rescue => e
+        puts e.to_s.red
+      end
     end
   end
 
@@ -39,12 +46,6 @@ class MyCLI < Thor
   def delete(help_name)
     invoke :setup
     $control.delete_help(help_name)
-  end
-
-  desc "tomo_upload {help_name}", "tomo_upload HELP_NAME"
-  def tomo_upload(help_name)
-    invoke :setup
-    $control.upload_help(help_name)
   end
 
   desc "search {find_char}", "search FIND_CHAR"
