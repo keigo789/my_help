@@ -129,7 +129,7 @@ module MyHelp
       file = File.join(@local_help_dir,file+'.org')
       print "Are you sure to delete "+file.blue+"?[Ynq] ".red
       case STDIN.gets.chomp
-      when 'Y'
+      when 'y'
         begin
           FileUtils.rm(file,:verbose=>true)
         rescue => error
